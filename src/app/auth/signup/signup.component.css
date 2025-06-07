@@ -1,0 +1,17 @@
+form {
+    height: 34 rem; /* 1rem = 16px */
+    border: .1rem solid #3c3c3c;
+    background-color: #3e3e3e;
+    margin: 20px 0;
+    padding: 40px 0;
+}
+
+mat-form-field {
+    width: 400px;
+}
+
+a {
+    color: #717171;
+    text-decoration: none;
+    font-size: 1.4rem;
+}

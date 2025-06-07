@@ -1,0 +1,26 @@
+<section>
+    <form fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1rem" #f="ngForm" (ngSubmit)="onSubmit(f)">
+
+        <!-- Email -->
+        <mat-form-field>
+            <input type="email" matInput placeholder="Your email" name="email" ngModel required #emailInput="ngModel">
+            <!-- email greska -->
+            <mat-error *ngIf="emailInput.hasError('required')">Field should not be empty</mat-error>
+        </mat-form-field>
+
+        <!-- Password  -->
+        <mat-form-field>
+            <input type="password" matInput placeholder="Your password" name="password" ngModel required
+                #passInput="ngModel" minlength="8">
+
+            <!-- pass hint -->
+            <mat-hint align="end">{{ passInput.value?.length }} / 8</mat-hint>
+        </mat-form-field>
+
+        <button type="submit" mat-raised-button color="warn" [disabled]="f.invalid">Submit</button>
+
+        <!-- Errors -->
+        <mat-label *ngIf="errorExists">{{ errorText }}</mat-label>
+        <a routerLink="/signup">I do not have an account.</a>
+    </form>
+</section>

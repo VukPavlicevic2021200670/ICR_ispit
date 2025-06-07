@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Leave a Review</h2>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput type="number" required min="1" max="5" [(ngModel)]="review" placeholder="Enter your review (1-5)">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [disabled]="!review" (click)="submitReview()">Submit</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</div>

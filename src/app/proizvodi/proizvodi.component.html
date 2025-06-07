@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="sidebar">
+    <h3>Filteri</h3>
+    <div>
+      <div>
+        <label for="search-term">Search by Name:</label>
+        <input id="search-term" type="text" [(ngModel)]="filterValues.searchTerm" (ngModelChange)="onSearchChange()">
+      </div>
+      <div>
+      <label for="price-slider">Price Range:</label>
+      <mat-slider id="price-slider" [min]="filterValues.totalCena.min" [max]="filterValues.totalCena.max" (input)="onPriceChange()" discrete>
+        <input matSliderStartThumb [(ngModel)]="filterValues.cena.min" (ngModelChange)="onPriceChange()">
+        <input matSliderEndThumb [(ngModel)]="filterValues.cena.max" (ngModelChange)="onPriceChange()">
+      </mat-slider>
+      
+    </div>
+    </div>
+    
+    <div>
+      <h4>Tagovi:</h4>
+      <div *ngFor="let tag of tags">
+        <input type="checkbox" [value]="tag" (change)="updateCheckboxFilter(tag, filterValues.tag)">
+        <label>{{ tag }}</label>
+      </div>
+    </div>
+    <div>
+      <h4>Kolekcija:</h4>
+      <div *ngFor="let kolekcija of collections">
+        <input type="checkbox" [value]="kolekcija" (change)="updateCheckboxFilter(kolekcija, filterValues.kolekcija)">
+        <label>{{ kolekcija }}</label>
+      </div>
+    </div>
+    
+  </div>
+  <div class="proizvod-list">
+    <mat-card *ngFor="let proizvod of filteredProizvodi">
+      <img mat-card-image [src]="proizvod.slika" alt="{{ proizvod.name }}" class="product-image">
+      <mat-card-title>{{ proizvod.name }}</mat-card-title>
+      <mat-card-content>
+        <p>{{ proizvod.kolekcija }}</p>
+        <p>Cena: {{ proizvod.cena | currency }}</p>
+        <p>Tagovi: {{ proizvod.tag.join(', ') }}</p>
+        <p>Kolekcija: {{ proizvod.kolekcija }}</p>
+        <p>Prosečna ocena: {{ calculateAverageReview(proizvod.reviews) | number:'1.1-1' }}</p>
+      </mat-card-content>
+      <button mat-raised-button color="primary" (click)="addToCart(proizvod)">Dodaj u Korpu</button>
+    </mat-card>
+  </div>
+</div>

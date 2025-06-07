@@ -1,0 +1,53 @@
+<div class="orders">
+    <table *ngIf="orders.length > 0">
+      <thead>
+        <tr>
+          <th class="image-column">Slika</th>
+          <th class="name-column">Naziv</th>
+          <th class="price-column">Cena</th>
+          <th class="quantity-column">Količina</th>
+          <th class="status-column">Status</th>
+          <th class="action-column">Akcija</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders">
+          <td class="image-column">
+            <img [src]="order.proizvod.slika" alt="{{ order.proizvod.name }}" class="cart-item-image">
+          </td>
+          <td class="name-column">{{ order.proizvod.name }}</td>
+          <td class="price-column">{{ order.proizvod.cena | currency }}</td>
+          <td class="quantity-column">
+            <span *ngIf="order.status === 'pristigo' || order.status === 'otkazano'">{{ order.quantity }}</span>
+            <span *ngIf="order.status === 'u toku'">
+              <button (click)="decreaseQuantity(order)">-</button>
+              {{ order.quantity }}
+              <button (click)="increaseQuantity(order)">+</button>
+            </span>
+          </td>
+          <td class="status-column">{{ order.status }}</td>
+          <td class="action-column">
+            <button *ngIf="order.status === 'u toku'" (click)="cancelOrder(order)">Otkazati</button>
+            <button *ngIf="order.status === 'pristigo' && !order.reviewed" (click)="openReviewDialog(order)">Review</button>
+            <button *ngIf="order.status === 'pristigo' || order.status === 'otkazano'" (click)="removeOrder(order)">Obrisi</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="orders.length === 0">
+      Nemate nijednu narudžbu.
+    </div>
+  </div>
+  
+  <!-- Review Modal (hidden by default) -->
+  <div class="modal" *ngIf="reviewingOrder">
+    <div class="modal-content">
+      <h4>Review {{ reviewingOrder.proizvod.name }}</h4>
+      <select [(ngModel)]="reviewValue">
+        <option *ngFor="let rating of [1, 2, 3, 4, 5]" [value]="rating">{{ rating }}</option>
+      </select>
+      <button (click)="submitReview()">Submit</button>
+      <button (click)="cancelReview()">Cancel</button>
+    </div>
+  </div>
+  

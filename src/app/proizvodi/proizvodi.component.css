@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+}
+
+.sidebar {
+  width: 20%;
+  padding: 16px;
+  background-color: #333;
+  color: white;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.sidebar h3, .sidebar h4 {
+  color: white;
+}
+
+.proizvod-list {
+  flex: 3;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1em;
+}
+
+mat-card {
+  width: 200px;
+  margin: 16px;
+}
+
+mat-card img {
+  width: 100%;
+  height: auto;
+}
+
+mat-card-title, mat-card-content p {
+  margin: 8px 0;
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin: 1em 0;
+}
+
+.checkbox-item {
+  margin: 0.5em 0;
+}
+.product-image {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
