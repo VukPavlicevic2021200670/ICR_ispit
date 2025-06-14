@@ -16,6 +16,6 @@ export const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'flight/:id', component: FlightComponent },
-    { path: 'pet', component: PetComponent },
+    { path: 'pet/:id', component: PetComponent },
     { path: '**', redirectTo: '' }
 ];
