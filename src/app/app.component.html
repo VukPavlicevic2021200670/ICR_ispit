@@ -1,0 +1,69 @@
+<div class="container">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/">
+        <i class="fa-solid fa-plane-departure"></i> TicketGo
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/list">List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/about">About</a>
+          </li>
+          <li class="nav-item" *ngIf="userService.hasActive()">
+            <a class="nav-link" routerLink="/profile">Profile</a>
+          </li>
+          <li class="nav-item" *ngIf="userService.hasActive()">
+            <button class="nav-link" type="button" (click)="doLogout()">Logout</button>
+          </li>
+          <li class="nav-item" *ngIf="!userService.hasActive()">
+            <a class="nav-link" routerLink="/login">Login</a>
+          </li>
+        </ul>
+        <span class="navbar-text" *ngIf="userService.hasActive()">
+          <i class="fa-solid fa-user"></i> {{userService.getActive()}}
+        </span>
+      </div>
+    </div>
+  </nav>
+  <router-outlet />
+  <div class="chatbot-container position-fixed bottom-0 end-0 p-3">
+    <!-- Toggle Button -->
+    <button class="btn btn-primary rounded-circle p-3" (click)="toggleChat()" *ngIf="!isChatVisible">
+      <i class="fa-solid fa-comments"></i>
+    </button>
+  
+    <!-- Chatbox -->
+    <div *ngIf="isChatVisible" class="chatbox card chatbox-content">
+      <div class="card-header d-flex justify-content-between">
+        <strong>Rasa Chat Bot</strong>
+        <button class="btn-close" aria-label="Close" (click)="toggleChat()"></button>
+      </div>
+      <div class="card-body chat-body" #chatBody>
+        <div *ngFor="let message of messages" class="message mb-2">
+          <div *ngIf="message.type === 'user'" class="text-end">
+            <div class="badge bg-primary text-white">{{ message.text }}</div>
+          </div>
+          <div *ngIf="message.type === 'bot'" class="text-start">
+            <div class="badge bg-secondary text-white msg-content" [innerHTML]="message.text"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <input type="text" class="form-control" [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..."/>
+      </div>
+    </div>
+  </div>
+  <footer class="text-center mb-3">
+    &copy; {{year}} Interakcija Čovek Računar - Univerzitet Singidunum
+  </footer>
+</div>

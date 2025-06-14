@@ -1,0 +1,17 @@
+<div class="login-form">
+    <h3>Welcome back!</h3>
+    <div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" (change)="updateEmail($event)" (keyup.enter)="doLogin()">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" (change)="updatePassword($event)" (keyup.enter)="doLogin()">
+        </div>
+        <div class="btn-group mb-3">
+            <button type="button" class="btn btn-primary" (click)="doLogin()">Submit</button>
+            <a routerLink="/signup" class="btn btn-outline-secondary">Or create an account now!</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+- rule: Say where are lectures
+  steps:
+  - intent: lecture_location
+  - action: utter_lecture_location
+
+- rule: Test out the actions integration
+  steps:
+  - intent: test_sanic_actions
+  - action: action_hello_world
+
+- rule: Display departures
+  steps:
+  - intent: flight_list
+  - action: action_flight_list

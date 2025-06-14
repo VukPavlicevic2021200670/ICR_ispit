@@ -1,0 +1,21 @@
+<div class="signup-form">
+    <h3>Create an account</h3>
+    <div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" (change)="updateEmail($event)" (keyup.enter)="doSignup()">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" (change)="updatePassword($event)" (keyup.enter)="doSignup()">
+        </div>
+        <div class="mb-3">
+            <label for="repeat" class="form-label">Repeat password</label>
+            <input type="password" class="form-control" id="repeat" (change)="updateRepeat($event)" (keyup.enter)="doSignup()">
+        </div>
+        <div class="btn-group mb-3">
+            <button type="button" class="btn btn-primary" (click)="doSignup()">Submit</button>
+            <a routerLink="/login" class="btn btn-outline-secondary">I already have an account!</a>
+        </div>
+    </div>
+</div>
