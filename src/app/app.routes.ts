@@ -6,6 +6,7 @@ import { ListComponent } from './list/list.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { ProfileComponent } from './profile/profile.component';
+import {PetComponent} from "./pet/pet.component";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
     { path: 'signup', component: SignupComponent },
     { path: 'profile', component: ProfileComponent },
     { path: 'flight/:id', component: FlightComponent },
+    { path: 'pet', component: PetComponent },
     { path: '**', redirectTo: '' }
 ];

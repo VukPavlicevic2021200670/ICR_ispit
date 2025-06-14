@@ -1,0 +1,43 @@
+<div *ngIf="pet">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a routerLink="/">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a routerLink="/pets">Pets</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ pet.name }} ({{ pet.breed }})</li>
+        </ol>
+    </nav>
+
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-8">
+                <img [src]="pet.imageUrl" class="img-fluid rounded-start" alt="{{ pet.name }}">
+            </div>
+            <div class="col-md-4">
+                <div class="card-body">
+                    <h3 class="card-title">{{ pet.name }}</h3>
+                    <p class="card-text"><small class="text-muted">{{ pet.breed }}</small></p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Breed:</strong> {{ pet.breed }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Age:</strong> {{ pet.age }} year{{ pet.age === 1 ? '' : 's' }}
+                    </li>
+                </ul>
+                <div class="card-body">
+                    <a routerLink="/" class="btn btn-primary m-1">
+                        <i class="fa-solid fa-house"></i> Homepage
+                    </a>
+                    <button type="button" class="btn btn-success m-1" (click)="doAddToCart(pet.id)">
+                        <i class="fa-solid fa-cart-shopping"></i> Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
