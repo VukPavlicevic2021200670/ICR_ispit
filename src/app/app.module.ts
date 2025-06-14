@@ -19,6 +19,7 @@ import { KorpaComponent } from './korpa/korpa.component';
 import { OrdersComponent } from './korpa/orders/orders.component';
 import { CurrentComponent } from './korpa/current/current.component';
 import { ReviewComponent } from './korpa/orders/review/review.component';
+import { ChatbotinterfaceComponent } from './chatbotinterface/chatbotinterface.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ReviewComponent } from './korpa/orders/review/review.component';
     KorpaComponent,
     OrdersComponent,
     CurrentComponent,
-    ReviewComponent
+    ReviewComponent,
+    ChatbotinterfaceComponent
   ],
   imports: [
     BrowserModule,
