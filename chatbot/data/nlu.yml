@@ -114,6 +114,16 @@ nlu:
     - what are the latest departures
     - any recommended flights
 
+- intent: pet_list
+  examples: |
+    - recommend me some pets
+    - please give me some pets
+    - show me pets
+    - show me all pets
+    - can you send me a list of pets
+    - what pets do you offer
+    - any pets
+
 - intent: find_flights_by_destination
   examples: |
     - show me some flights to [Abu Dhabi](destination)

@@ -22,7 +22,7 @@ rules:
   - intent: test_sanic_actions
   - action: action_hello_world
 
-- rule: Display departures
+- rule: Display pets
   steps:
-  - intent: flight_list
-  - action: action_flight_list
+  - intent: pet_list
+  - action: action_pet_list

@@ -15,8 +15,8 @@ intents:
 
 actions:
   - action_hello_world
-  - action_flight_list
-  - action_flight_list_by_destination
+  - action_pet_list
+  - action_pet_list_by_breed
 
 slots:
   destination:
