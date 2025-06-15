@@ -29,11 +29,6 @@ stories:
   - intent: deny
   - action: utter_goodbye
 
-- story: find flight by the destination
-  steps:
-  - intent: find_flights_by_destination
-  - action: action_flight_list_by_destination
-
 - story: find pet by the breed
   steps:
     - intent: find_pet_by_breed

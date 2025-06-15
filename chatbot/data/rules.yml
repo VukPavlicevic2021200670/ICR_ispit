@@ -22,7 +22,7 @@ rules:
   - intent: test_sanic_actions
   - action: action_hello_world
 
-- rule: Display pets
+- rule: Display pet
   steps:
   - intent: pet_list
   - action: action_pet_list

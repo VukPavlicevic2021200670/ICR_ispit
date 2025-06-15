@@ -1,20 +1,20 @@
 import requests
-import datetime
 
-def get_flights():
+def get_pet():
     try:
-        url = 'https://flight.pequla.com/api/flight/list?type=departure'
+        url = 'http://localhost:3000/api/pets?page=0&size=5'  # you can change pagination as needed
         response = requests.get(url)
         response.raise_for_status()
-        
+
         data = response.json()
-        if (isinstance(data, list)):
-            print(f"There is a total of {len(data)} flights")
-            for flight in data[:5]:
-                t = datetime.datetime.fromisoformat(flight['scheduledAt'])
-                print(f"Flight to {flight['destination']} scheduled for {t.strftime('%c')}")
-            return
-        
-        print("Data is not an array!")
+        pets = data.get('content', [])
+
+        print(f"There is a total of {data.get('totalElements', 0)} pets in the database.")
+        for pet in pets:
+            print(f"Pet: {pet['name']} | Breed: {pet['breed']} | Age: {pet.get('age', 'N/A')}")
+
     except requests.exceptions.RequestException as ex:
-        print(ex)
+        print(f"Request failed: {ex}")
+
+# Run the function
+get_pet()

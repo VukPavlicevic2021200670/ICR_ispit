@@ -10,8 +10,8 @@ intents:
   - bot_challenge
   - lecture_location
   - test_sanic_actions
-  - flight_list
-  - find_flights_by_destination
+  - pet_list
+  - find_pet_by_breed
 
 actions:
   - action_hello_world
@@ -19,15 +19,15 @@ actions:
   - action_pet_list_by_breed
 
 slots:
-  destination:
+  breed:
     type: text
     influence_conversation: false
     mappings:
       - type: from_entity
-        entity: destination
+        entity: breed
 
 entities:
-  - destination
+  - breed
 
 responses:
   utter_greet:

@@ -9,18 +9,25 @@ app.use(express.json())
 let pets = require('./pets.json')
 
 app.get('/api/pets', (req, res) => {
-    let { page = 0, size = 10, name } = req.query
-    page = parseInt(page)
-    size = parseInt(size)
+    let { page = 0, size = 10, name, breed } = req.query;
+    page = parseInt(page);
+    size = parseInt(size);
 
-    let filtered = pets
+    let filtered = pets;
 
     if (name) {
-        filtered = filtered.filter(p => p.name.toLowerCase().includes(name.toLowerCase()))
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(name.toLowerCase()));
     }
 
-    const total = filtered.length
-    const paged = filtered.slice(page * size, page * size + size)
+    if (breed) {
+        const normalize = str => str.toLowerCase().replace(/s$/, '');
+        const queryBreed = normalize(breed);
+
+        filtered = filtered.filter(p => normalize(p.breed).includes(queryBreed));
+    }
+
+    const total = filtered.length;
+    const paged = filtered.slice(page * size, page * size + size);
 
     res.json({
         content: paged,
@@ -28,8 +35,10 @@ app.get('/api/pets', (req, res) => {
         size,
         totalElements: total,
         totalPages: Math.ceil(total / size)
-    })
-})
+    });
+});
+
+
 
 app.get('/api/pets/:id', (req, res) => {
     const id = parseInt(req.params.id);

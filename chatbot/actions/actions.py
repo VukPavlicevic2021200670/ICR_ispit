@@ -17,51 +17,50 @@ class ActionHelloWorld(Action):
         dispatcher.utter_message(text="Hello World!")
         return []
 
-class ActionFlghtList(Action):
-
+class ActionPetList(Action):
     def name(self) -> Text:
-        return "action_flight_list"
+        return "action_pet_list"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        url = 'https://flight.pequla.com/api/flight?type=departure&page=0&size=4&sort=id,desc'
-        generate_attachment(url, dispatcher, "Here are some flights")
+        url = 'http://localhost:3000/api/pets?page=0&size=4&sort=id,desc'
+        generate_attachment(url, dispatcher, "Here are some pets you can adopt:")
         return []
 
-class ActionFlghtListByDestination(Action):
-
+class ActionPetListByBreed(Action):
     def name(self) -> Text:
-        return "action_flight_list_by_destination"
+        return "action_pet_list_by_breed"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        # Extract the destination from the action
-        destination = tracker.get_slot("destination")
-        if not destination:
-            dispatcher.utter_message(text="You haven't provided the destination in the message")
+        breed = tracker.get_slot("breed")
+        if not breed:
+            dispatcher.utter_message(text="You haven't provided the breed.")
             return []
 
-        # Generate a response using the HTTP Request
-        url = f'https://flight.pequla.com/api/flight/destination/{destination}?type=departure&page=0&size=4&sort=id,desc'
-        generate_attachment(url, dispatcher, f"Here are flights to {destination}")
+        # Use existing /api/pets endpoint with ?breed=
+        url = (
+            f'http://localhost:3000/api/pets'
+            f'?breed={breed}&page=0&size=4&sort=id,desc'
+        )
+        generate_attachment(url, dispatcher, f"Here are some {breed}s available:")
         return []
 
-# Function that does the actual HTTP Request and sends it back as an attachement
-def generate_attachment(url: str, dispatcher: CollectingDispatcher, msg: str ):
+def generate_attachment(url: str, dispatcher: CollectingDispatcher, msg: str):
     try:
         response = requests.get(url)
         response.raise_for_status()
 
         data = response.json()
-        arr = data['content']
-        if (isinstance(arr, list) and len(arr)>0):
+        arr = data.get('content', [])
+        if isinstance(arr, list) and len(arr) > 0:
             dispatcher.utter_message(text=msg, attachment=arr)
-            return[]
+            return []
 
-        dispatcher.utter_message(text="We failed to find any flights!")
+        dispatcher.utter_message(text="We couldn't find any pets that match your request.")
     except requests.exceptions.RequestException as ex:
-        dispatcher.utter_message(text="An error occured!")
+        dispatcher.utter_message(text="An error occurred while retrieving the pet list.")

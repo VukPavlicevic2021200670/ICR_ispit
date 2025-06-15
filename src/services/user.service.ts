@@ -16,8 +16,8 @@ export class UserService {
 
   private createDefault() {
     const user: UserModel = {
-      email: 'pkresoja@singidunum.ac.rs',
-      password: 'pkresoja',
+      email: 'vuk.pavlicevic.21@singimail.rs',
+      password: 'vpavlicevic',
       flights: []
     }
 
