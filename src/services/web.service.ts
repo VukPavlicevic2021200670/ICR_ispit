@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { FlightModel } from '../models/flight.model';
 import { PageModel } from '../models/page.model';
 import { RasaModel } from '../models/rasa.model';
+import { PetModel } from '../models/pet.model';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
@@ -15,7 +16,7 @@ export class WebService {
   private client: HttpClient
 
   private constructor() {
-    this.baseUrl = "https://flight.pequla.com/api"
+    this.baseUrl = "http://localhost:3000/api"
     this.client = inject(HttpClient)
   }
 
@@ -25,32 +26,36 @@ export class WebService {
     return this.instance
   }
 
-  public getFlights(page = 0, size = 10, sort = "scheduledAt,desc") {
-    const url = `${this.baseUrl}/flight?page=${page}&size=${size}&sort=${sort}&type=departure`
-    return this.client.get<PageModel<FlightModel>>(url)
+  public getPets(page = 0, size = 10) {
+    const url = `${this.baseUrl}/pets?page=${page}&size=${size}}`;
+    return this.client.get<PageModel<PetModel>>(url);
   }
 
-  public getRecommendedFlights() {
-    return this.getFlights(0, 3)
+  public getRecommendedPets() {
+    return this.getPets(0, 3)
   }
 
-  public getFlightById(id: number) {
-    const url = `${this.baseUrl}/flight/${id}`
-    return this.client.get<FlightModel>(url)
+  public getPetById(id: number) {
+    const url = `${this.baseUrl}/pets/${id}`
+    return this.client.get<PetModel>(url)
   }
 
-  public getFlightsByIds(ids: number[]) {
-    const url = `${this.baseUrl}/flight/list`
-    return this.client.post<FlightModel[]>(url, ids, {
+  public getPetsByIds(ids: number[]) {
+    const url = `${this.baseUrl}/pets/list`
+    return this.client.post<PetModel[]>(url, ids, {
       headers: {
         'Accept': 'application/json'
       }
     })
   }
 
-  public getDestinationImage(dest: string) {
-    return 'https://img.pequla.com/destination/' + dest.split(" ")[0].toLowerCase() + '.jpg'
+  public getPetImage(name: string) {
+    console.log(name)
+    const url = `${this.baseUrl}/pets/name/${encodeURIComponent(name)}`;
+    return this.client.get<PetModel>(url);
   }
+
+
 
   public formatDate(iso: string | null) {
     if (iso == null) return 'On Time'

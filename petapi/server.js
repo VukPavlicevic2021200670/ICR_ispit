@@ -32,10 +32,18 @@ app.get('/api/pets', (req, res) => {
 })
 
 app.get('/api/pets/:id', (req, res) => {
-    const pet = pets.find(p => p.id === parseInt(req.params.id))
-    if (pet) res.json(pet)
-    else res.status(404).send({ error: 'Pet not found' })
-})
+    const id = parseInt(req.params.id);
+    const pet = pets.find(p => p.id === id);
+    if (!pet) return res.status(404).json({ error: 'Pet not found' });
+    res.json(pet);
+});
+
+app.post('/api/pets/list', (req, res) => {
+    const ids = req.body; // expecting an array
+    const filtered = pets.filter(p => ids.includes(p.id));
+    res.json(filtered);
+});
+
 
 app.listen(port, () => {
     console.log(`Pet API listening at http://localhost:${port}`)

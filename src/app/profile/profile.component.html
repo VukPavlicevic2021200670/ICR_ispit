@@ -17,7 +17,7 @@
     </button>
 </div>
 
-<table class="table table-striped" *ngIf="orders[0].flight">
+<table class="table table-striped" *ngIf="orders[0].pet">
     <thead>
         <tr>
             <th scope="col"><i class="fa-solid fa-hashtag"></i> Id</th>
@@ -32,11 +32,7 @@
     <tbody>
         <tr *ngFor="let order of orders">
             <th scope="row">{{order.id}}</th>
-            <td>{{order.flight?.flightNumber}}</td>
-            <td>{{order.flight?.destination}}</td>
-            <td>
-                {{webService.formatDate(order.flight!.estimatedAt?order.flight!.estimatedAt:order.flight!.scheduledAt)}}
-            </td>
+
             <td>{{order.status.toUpperCase()}}</td>
             <td>
                 <span *ngIf="order.rating == 'na'">N/A</span>

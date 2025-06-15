@@ -1,26 +1,24 @@
-<div *ngIf="flights">
+<div *ngIf="pets">
     <div class="row mb-3">
-        <div class="col-sm-4" *ngFor="let flight of flights.content">
+        <div class="col-sm-4" *ngFor="let pet of pets.content">
             <div class="card">
-                <img [src]="[webService.getDestinationImage(flight.destination)]" class="card-img-top"
-                    [alt]="flight.destination">
+                <img [src]="pet.imageUrl" class="card-img-top" [alt]="pet.name">
                 <div class="card-body">
-                    <h3 class="card-title">{{flight.destination}}</h3>
-                    <p class="card-text">{{webService.formatDate(flight.scheduledAt)}} ({{flight.flightNumber}})</p>
+                    <h3 class="card-title">{{ pet.name }}</h3>
+                    <p class="card-text">
+                        <strong>Breed:</strong> {{ pet.breed }}<br>
+                        <strong>Age:</strong> {{ pet.age }} year{{ pet.age === 1 ? '' : 's' }}
+                    </p>
                 </div>
                 <div class="card-body">
-                    <a class="btn btn-primary m-1" routerLink="{{'/flight/'+flight.id}}">
+                    <a class="btn btn-primary m-1" [routerLink]="['/pet', pet.id]">
                         <i class="fa-solid fa-up-right-from-square"></i> Details
                     </a>
                     <a class="btn btn-success m-1" routerLink="/list">
-                        <i class="fa-solid fa-magnifying-glass"></i> Browse All
+                        <i class="fa-solid fa-paw"></i> Browse All
                     </a>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="w-100 mb-3">
-        <iframe class="mx-auto" height="400" [src]="getMapUrl() | safe" width="100%" allowfullscreen="" loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade" id="gmaps"></iframe>
     </div>
 </div>

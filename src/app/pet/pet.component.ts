@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PetModel } from '../../models/pet.model';
-import { MockapiService } from '../../services/mockapi.service';
 import { NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SafePipe } from '../../services/safe.pipe';
 import { UserService } from '../../services/user.service';
 import { AlertService } from '../../services/alert.service';
+import {WebService} from "../../services/web.service";
 
 @Component({
   selector: 'app-pet',
@@ -17,33 +17,36 @@ import { AlertService } from '../../services/alert.service';
 })
 export class PetComponent {
 
+  public webService: WebService
+  public userService: UserService
   public pet: PetModel | null = null;
 
-  constructor(
-      private router: Router,
-      private route: ActivatedRoute,
-      private mockApi: MockapiService,
-      private userService: UserService
-  ) {
-    this.route.params.subscribe(params => {
-      const id = +params['id'];
-      this.mockApi.getPetById(id).subscribe(pet => this.pet = pet ?? null);
-    });
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.webService = WebService.getInstance()
+    this.userService = UserService.getInstance()
+    route.params.subscribe(params => {
+      // Preuzimamo variajble iz putanje
+      const id = params['id']
+
+      // Preuzimamo JSON objekat leta za ID
+      this.webService.getPetById(id)
+          .subscribe(rsp => this.pet = rsp)
+    })
   }
 
   public doAddToCart(id: number) {
-    AlertService.question('Add to cart', `Do you want to adopt pet ${id}?`)
+    AlertService.question('Add to cart', `Do you want to add pet ${id} to cart?`)
         .then(rsp => {
           if (rsp.isConfirmed) {
             if (!this.userService.hasActive()) {
-              AlertService.error('You have to be signed in', 'You can’t add pets to the cart if you are not signed in!');
-              this.router.navigate(['/login'], { queryParams: { from: '/pet/' + id }, relativeTo: this.route });
-              return;
+              AlertService.error('You have to be signed in', 'You cant add flights to the cart if you are not signed in!')
+              this.router.navigate(['/login'], { queryParams: { from: '/flight/' + id }, relativeTo: this.route });
+              return
             }
 
-            this.userService.addToCart(id);
-            this.router.navigate(['/profile'], { relativeTo: this.route });
+            this.userService.addToCart(id)
+            this.router.navigate(['/profile'], { relativeTo: this.route })
           }
-        });
+        })
   }
 }

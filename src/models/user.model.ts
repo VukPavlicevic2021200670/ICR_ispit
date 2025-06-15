@@ -1,4 +1,5 @@
 import { FlightModel } from "./flight.model"
+import {PetModel} from "./pet.model";
 
 export interface UserModel {
     email: string
@@ -8,7 +9,7 @@ export interface UserModel {
 
 export interface UserOrderModel {
     id: number,
-    flight?: FlightModel
+    pet?: PetModel
     status: 'reserved' | 'paid' | 'canceled'
     rating: 'l' | 'd' | 'na'
     created: string

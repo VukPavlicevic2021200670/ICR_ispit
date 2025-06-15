@@ -7,6 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { AlertService } from '../../services/alert.service';
+import {PetModel} from "../../models/pet.model";
 
 @Component({
   selector: 'app-list',
@@ -19,39 +20,39 @@ export class ListComponent {
 
   public webService: WebService
   public userService: UserService
-  public data: PageModel<FlightModel> | null = null
+  public data: PageModel<PetModel> | null = null
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.webService = WebService.getInstance()
     this.userService = UserService.getInstance()
-    this.getFlightData()
+    this.getPetData()
   }
 
-  public getFlightData(page = 0) {
-    this.webService.getFlights(page)
+  public getPetData(page = 0) {
+    this.webService.getPets(page)
       .subscribe(rsp => this.data = rsp)
   }
 
   public first() {
-    this.getFlightData()
+    this.getPetData()
   }
 
   public previous() {
     if (this.data == undefined) return
     if (this.data.first) return
-    this.getFlightData(this.data.number - 1)
+    this.getPetData(this.data.number - 1)
   }
 
   public next() {
     if (this.data == undefined) return
     if (this.data.last) return
-    this.getFlightData(this.data.number + 1)
+    this.getPetData(this.data.number + 1)
   }
 
   public last() {
     if (this.data == undefined) return
     if (this.data.last) return
-    this.getFlightData(this.data.totalPages - 1)
+    this.getPetData(this.data.totalPages - 1)
   }
 
   public doAddToCart(id: number) {

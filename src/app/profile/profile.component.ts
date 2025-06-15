@@ -34,10 +34,10 @@ export class ProfileComponent {
       if (this.orders.length == 0) return
 
       // Retrieve flights by id from orders
-      this.webService.getFlightsByIds(this.orders.map(o => o.id))
+      this.webService.getPetsByIds(this.orders.map(o => o.id))
         .subscribe(rsp => {
           this.orders.forEach(o => {
-            o.flight = rsp.find(ro => ro.id === o.id)
+            o.pet = rsp.find(ro => ro.id === o.id)
           })
         })
     } catch (e) {
