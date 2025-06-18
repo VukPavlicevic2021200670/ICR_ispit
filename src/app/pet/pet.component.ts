@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { PetModel } from '../../models/pet.model';
-import { NgIf } from '@angular/common';
+import {NgClass, NgFor, NgIf} from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SafePipe } from '../../services/safe.pipe';
 import { UserService } from '../../services/user.service';
@@ -11,7 +11,7 @@ import {WebService} from "../../services/web.service";
 @Component({
   selector: 'app-pet',
   standalone: true,
-  imports: [HttpClientModule, RouterLink, NgIf, SafePipe],
+  imports: [HttpClientModule, RouterLink, NgIf, SafePipe, NgFor, NgClass],
   templateUrl: './pet.component.html',
   styleUrl: './pet.component.css'
 })

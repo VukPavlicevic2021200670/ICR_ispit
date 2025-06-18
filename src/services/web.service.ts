@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { FlightModel } from '../models/flight.model';
 import { PageModel } from '../models/page.model';
 import { RasaModel } from '../models/rasa.model';
 import { PetModel } from '../models/pet.model';
 import { v4 as uuidv4 } from 'uuid';
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,20 @@ export class WebService {
     return this.instance
   }
 
-  public getPets(page = 0, size = 10) {
-    const url = `${this.baseUrl}/pets?page=${page}&size=${size}}`;
-    return this.client.get<PageModel<PetModel>>(url);
+  // web.service.ts
+  public getPets(page = 0, size = 10, name?: string, breed?: string): Observable<PageModel<PetModel>> {
+    let params = new HttpParams()
+        .set('page', page.toString())
+        .set('size', size.toString());
+
+    if (name) {
+      params = params.set('name', name);
+    }
+    if (breed) {
+      params = params.set('breed', breed);
+    }
+
+    return this.client.get<PageModel<PetModel>>(`${this.baseUrl}/pets`, { params });
   }
 
   public getRecommendedPets() {

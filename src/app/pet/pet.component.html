@@ -1,3 +1,4 @@
+<!-- pet.component.html -->
 <div *ngIf="pet">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -20,13 +21,23 @@
                 <div class="card-body">
                     <h3 class="card-title">{{ pet.name }}</h3>
                     <p class="card-text"><small class="text-muted">{{ pet.breed }}</small></p>
+                    <p class="card-text">{{ pet.description }}</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <strong>Breed:</strong> {{ pet.breed }}
                     </li>
                     <li class="list-group-item">
+                        <strong>Origin:</strong> {{ pet.origin }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Size:</strong> {{ pet.size }}
+                    </li>
+                    <li class="list-group-item">
                         <strong>Age:</strong> {{ pet.age }} year{{ pet.age === 1 ? '' : 's' }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Price Range:</strong> {{ pet.priceRange }}
                     </li>
                 </ul>
                 <div class="card-body">
@@ -37,6 +48,27 @@
                         <i class="fa-solid fa-cart-shopping"></i> Add to cart
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="mt-4" *ngIf="pet.reviews && pet.reviews.length > 0">
+        <h4>Reviews</h4>
+        <div class="list-group">
+            <div class="list-group-item" *ngFor="let review of pet.reviews">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">{{ review.author }}</h5>
+                    <small>{{ review.date }}</small>
+                </div>
+                <div class="mb-1">
+                    <span *ngFor="let star of [1,2,3,4,5]">
+                        <i class="fa-solid fa-star"
+                           [class.text-warning]="star <= review.rating"
+                           [class.text-muted]="star > review.rating"></i>
+                    </span>
+                </div>
+                <p class="mb-1">{{ review.comment }}</p>
             </div>
         </div>
     </div>

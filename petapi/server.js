@@ -8,6 +8,7 @@ app.use(express.json())
 
 let pets = require('./pets.json')
 
+// server.js
 app.get('/api/pets', (req, res) => {
     let { page = 0, size = 10, name, breed } = req.query;
     page = parseInt(page);
@@ -20,24 +21,43 @@ app.get('/api/pets', (req, res) => {
     }
 
     if (breed) {
-        const normalize = str => str.toLowerCase().replace(/s$/, '');
-        const queryBreed = normalize(breed);
-
-        filtered = filtered.filter(p => normalize(p.breed).includes(queryBreed));
+        filtered = filtered.filter(p => p.breed.toLowerCase().includes(breed.toLowerCase()));
     }
 
-    const total = filtered.length;
-    const paged = filtered.slice(page * size, page * size + size);
+    const totalElements = filtered.length;
+    const totalPages = Math.ceil(totalElements / size);
+    const content = filtered.slice(page * size, page * size + size);
+    const numberOfElements = content.length;
 
     res.json({
-        content: paged,
-        page,
+        content,
+        pageable: {
+            sort: {
+                sorted: false,
+                empty: true,
+                unsorted: true
+            },
+            pageNumber: page,
+            pageSize: size,
+            offset: page * size,
+            paged: true,
+            unpaged: false
+        },
+        totalPages,
+        totalElements,
+        last: page >= totalPages - 1,
         size,
-        totalElements: total,
-        totalPages: Math.ceil(total / size)
+        number: page,
+        sort: {
+            sorted: false,
+            empty: true,
+            unsorted: true
+        },
+        numberOfElements,
+        first: page === 0,
+        empty: numberOfElements === 0
     });
 });
-
 
 
 app.get('/api/pets/:id', (req, res) => {
