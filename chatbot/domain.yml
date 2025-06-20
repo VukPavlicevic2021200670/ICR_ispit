@@ -12,11 +12,19 @@ intents:
   - test_sanic_actions
   - pet_list
   - find_pet_by_breed
+  - find_pet_by_size
+  - find_pet_by_age
+  - find_pet_by_price
+  - find_pet_combined
 
 actions:
   - action_hello_world
   - action_pet_list
   - action_pet_list_by_breed
+  - action_pet_list_by_size
+  - action_pet_list_by_age
+  - action_pet_list_by_price
+  - action_pet_list_by_multiple
 
 slots:
   breed:
@@ -26,31 +34,58 @@ slots:
       - type: from_entity
         entity: breed
 
+  size:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: size
+
+  age:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: age
+
+  price:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: price
+
 entities:
   - breed
+  - size
+  - age
+  - price
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+    - text: "Hey! How are you?"
 
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://img.pequla.com/destination/zagreb.jpg"
+    - text: "Here is something to cheer you up:"
+      image: "https://img.pequla.com/destination/zagreb.jpg"
 
   utter_did_that_help:
-  - text: "Did that help you?"
+    - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, carry on!"
+    - text: "Great, carry on!"
 
   utter_goodbye:
-  - text: "Bye"
+    - text: "Bye"
 
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+    - text: "I am a bot, powered by Rasa."
 
   utter_lecture_location:
-  - text: "You can attend both lecture and exercises in Danijelova 32 street in the electronic classrom E02"
+    - text: "You can attend both lecture and exercises in Danijelova 32 street in the electronic classrom E02"
+
+  utter_no_pets_found:
+    - text: "Sorry, I couldn't find any pets matching your criteria. Would you like to try different filters?"
 
 session_config:
   session_expiration_time: 60

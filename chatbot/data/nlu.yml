@@ -134,6 +134,61 @@ nlu:
     - do you have [cats](breed) in the shelter?
     - are [rabbits](breed) currently available?
 
+- intent: find_pet_by_size
+  examples: |
+    - show me [small](size) pets
+    - do you have any [medium](size) animals?
+    - find me [large](size) pets
+    - can I see some [small](size) animals?
+    - are there any [medium](size) pets available?
+    - I want to adopt a [small](size) pet
+    - show [large](size) pets
+    - any [medium](size) pets?
+    - looking for a [small](size) animal
+    - are [large](size) pets available for adoption?
+
+- intent: find_pet_by_age
+  examples: |
+    - show me [young](age) pets
+    - do you have any [adult](age) animals?
+    - find me [baby](age) pets
+    - can I see some [young](age) animals?
+    - are there any [senior](age) pets available?
+    - I want to adopt a [baby](age) pet
+    - show [adult](age) pets
+    - any [young](age) pets?
+    - looking for a [senior](age) animal
+
+- intent: find_pet_by_price
+  examples: |
+    - show me [cheap](price) pets
+    - do you have any [affordable](price) animals?
+    - find me [expensive](price) pets
+    - can I see some [luxury](price) animals?
+    - are there any [affordable](price) pets available?
+    - I want to adopt a [cheap](price) pet
+    - show [expensive](price) pets
+    - any [luxury](price) pets?
+    - looking for a [affordable](price) animal
+
+- intent: find_pet_combined
+  examples: |
+    - show me [small](size) [cats](breed)
+    - find [young](age) [dogs](breed) that are [affordable](price)
+    - I want a [large](size) [dog](breed) that's [young](age)
+    - show [luxury](price) [cats](breed)
+    - find me [baby](age) [rabbits](breed) that are [small](size)
+    - looking for [medium](size) [dogs](breed) that are [affordable](price)
+    - show [senior](age) [cats](breed) that are [cheap](price)
+    - I want an [adult](age) [dog](breed) that's [medium](size)
+    - find [large](size) [dogs](breed) that are [young](age) and [expensive](price)
+    - show me [small](size) [cats](breed) that are [baby](age)
+    - looking for [affordable](price) [young](age) pets
+    - find [medium](size) [luxury](price) animals
+    - show me [senior](age) [cats](breed) that are [small](size) and [cheap](price)
+    - I want a [large](size) [dog](breed) that's [young](age) and [affordable](price)
+    - find me [baby](age) [rabbits](breed) that are [small](size) and [cheap](price)
+
 - regex: breed
   examples: |
     - [cats](breed)
@@ -142,3 +197,27 @@ nlu:
     - [cat](breed)
     - [dog](breed)
     - [rabbit](breed)
+
+- regex: size
+  examples: |
+    - [small](size)
+    - [medium](size)
+    - [large](size)
+    - [tiny](size)
+    - [big](size)
+
+- regex: age
+  examples: |
+    - [baby](age)
+    - [young](age)
+    - [adult](age)
+    - [senior](age)
+    - [puppy](age)
+    - [kitten](age)
+
+- regex: price
+  examples: |
+    - [cheap](price)
+    - [affordable](price)
+    - [expensive](price)
+    - [luxury](price)

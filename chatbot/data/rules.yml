@@ -26,3 +26,23 @@ rules:
   steps:
   - intent: pet_list
   - action: action_pet_list
+
+- rule: Display pets by size
+  steps:
+    - intent: find_pet_by_size
+    - action: action_pet_list_by_size
+
+- rule: Display pets by age
+  steps:
+    - intent: find_pet_by_age
+    - action: action_pet_list_by_age
+
+- rule: Display pets by price
+  steps:
+    - intent: find_pet_by_price
+    - action: action_pet_list_by_price
+
+- rule: Display pets by combined filters
+  steps:
+    - intent: find_pet_combined
+    - action: action_pet_list_by_multiple
