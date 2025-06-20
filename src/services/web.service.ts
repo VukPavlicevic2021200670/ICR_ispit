@@ -28,17 +28,24 @@ export class WebService {
   }
 
   // web.service.ts
-  public getPets(page = 0, size = 10, name?: string, breed?: string): Observable<PageModel<PetModel>> {
+  public getPets(
+      page = 0,
+      size = 10,
+      name?: string,
+      breed?: string,
+      petSize?: string,
+      age?: string,
+      priceRange?: string
+  ): Observable<PageModel<PetModel>> {
     let params = new HttpParams()
         .set('page', page.toString())
         .set('size', size.toString());
 
-    if (name) {
-      params = params.set('name', name);
-    }
-    if (breed) {
-      params = params.set('breed', breed);
-    }
+    if (name) params = params.set('name', name);
+    if (breed) params = params.set('breed', breed);
+    if (petSize) params = params.set('petSize', petSize); // Pet size filter
+    if (age) params = params.set('age', age);
+    if (priceRange) params = params.set('priceRange', priceRange);
 
     return this.client.get<PageModel<PetModel>>(`${this.baseUrl}/pets`, { params });
   }

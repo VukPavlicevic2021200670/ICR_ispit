@@ -23,6 +23,9 @@ export class ListComponent {
   public pageSize = 10; // Default page size
   public searchName = '';
   public searchBreed = '';
+  public searchPetSize = '';
+  public searchAge = '';
+  public searchPriceRange = '';
 
   constructor(private router: Router, private route: ActivatedRoute) {
     this.webService = WebService.getInstance();
@@ -37,17 +40,23 @@ export class ListComponent {
 
   // list.component.ts
   public getPetData(page = 0, size = this.pageSize) {
-    this.webService.getPets(page, size, this.searchName, this.searchBreed)
-        .subscribe({
-          next: (rsp) => {
-            this.data = rsp;
-            // Update URL with current page
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { page },
-              queryParamsHandling: 'merge'
-            });
-          },
+    this.webService.getPets(
+        page,
+        size,
+        this.searchName,
+        this.searchBreed,
+        this.searchPetSize,
+        this.searchAge,
+        this.searchPriceRange
+    ).subscribe({
+      next: (rsp) => {
+        this.data = rsp;
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { page },
+          queryParamsHandling: 'merge'
+        });
+      },
           error: (err) => {
             console.error('Error fetching pets:', err);
             this.data = {
@@ -96,6 +105,15 @@ export class ListComponent {
   public search() {
     // Reset to first page when searching
     this.getPetData(0);
+  }
+
+  public resetFilters() {
+    this.searchName = '';
+    this.searchBreed = '';
+    this.searchPetSize = '';
+    this.searchAge = '';
+    this.searchPriceRange = '';
+    this.getPetData(0); // Reset to first page
   }
 
   public doAddToCart(id: number) {
