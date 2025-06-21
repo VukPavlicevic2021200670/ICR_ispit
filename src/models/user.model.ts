@@ -11,6 +11,6 @@ export interface UserPetModel {
     id: number,
     pet?: PetModel
     status: 'reserved' | 'paid' | 'canceled'
-    rating: 'l' | 'd' | 'na'
+    userRating?: number;
     created: string
 }

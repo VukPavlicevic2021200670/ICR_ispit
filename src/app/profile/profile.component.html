@@ -37,9 +37,14 @@
         <td>{{pet.pet?.age}} year{{pet.pet?.age === 1 ? '' : 's'}}</td>
         <td>{{pet.status.toUpperCase()}}</td>
         <td>
-            <span *ngIf="pet.rating == 'na'">N/A</span>
-            <i class="fa-solid fa-thumbs-up" *ngIf="pet.rating == 'l'"></i>
-            <i class="fa-solid fa-thumbs-down" *ngIf="pet.rating == 'd'"></i>
+            <div *ngIf="pet.userRating">
+        <span *ngFor="let star of [1,2,3,4,5]">
+            <i class="fa-solid fa-star"
+               [class.text-warning]="star <= pet.userRating"
+               [class.text-muted]="star > pet.userRating"></i>
+        </span>
+            </div>
+            <span *ngIf="!pet.userRating">Not rated</span>
         </td>
         <td>
             <div class="btn-group">
@@ -50,19 +55,24 @@
                         *ngIf="pet.status == 'reserved'">
                     <i class="fa-solid fa-money-bill"></i> Pay
                 </button>
-                <button (click)="rate(pet)" type="button" class="btn btn-sm btn-secondary btn-table-sm"
-                        *ngIf="pet.status == 'paid' && pet.rating == 'na'">
+                <button (click)="rate(pet)"
+                        type="button"
+                        class="btn btn-sm btn-secondary btn-table-sm"
+                        *ngIf="pet.status === 'paid' && !pet.userRating">
                     <i class="fa-solid fa-star"></i> Rate
                 </button>
-                <button (click)="details(pet.id)" type="button" class="btn btn-sm btn-primary btn-table-sm">
-                    <i class="fa-solid fa-up-right-from-square"></i> Details
-                </button>
-                <button (click)="editPet(pet)" type="button" class="btn btn-sm btn-info btn-table-sm">
+                <button (click)="editPet(pet)"
+                        type="button"
+                        class="btn btn-sm btn-info btn-table-sm"
+                        *ngIf="pet.status !== 'paid'">
                     <i class="fa-solid fa-pen-to-square"></i> Edit
                 </button>
                 <button (click)="cancel(pet)" type="button" class="btn btn-sm btn-danger btn-table-sm"
                         *ngIf="pet.status == 'reserved'">
                     <i class="fa-solid fa-ban"></i> Cancel
+                </button>
+                <button (click)="deletePet(pet)" type="button" class="btn btn-sm btn-danger btn-table-sm">
+                    <i class="fa-solid fa-trash"></i> Delete
                 </button>
             </div>
         </td>

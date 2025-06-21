@@ -97,7 +97,6 @@ export class UserService {
         u.pets.push({
           id: petId,
           status: 'reserved',
-          rating: 'na',
           created: new Date().getTime().toString()
         })
       }
@@ -122,11 +121,6 @@ export class UserService {
     return active.pets
   }
   public updatePetDetails(petId: number, updates: Partial<UserPetModel>) {
-    if (!this.hasActive()) {
-      AlertService.error('Update failed', 'You need to be signed in to update pet details!');
-      return;
-    }
-
     const users: UserModel[] = JSON.parse(localStorage.getItem('users')!);
     const activeUser = users.find(u => u.email === this.getActive());
 
@@ -164,32 +158,21 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users))
   }
 
-  public changePetRating(rating: 'na' | 'l' | 'd', order: UserPetModel) {
+  public deletePet(petId: number): void {
     if (!this.hasActive()) {
-      AlertService.error('Order failed to change', 'You need to be signed in to browse or change your orders!')
-      return
+      AlertService.error('Delete failed', 'You need to be signed in to delete pets!');
+      return;
     }
 
-    if (!localStorage.getItem('users'))
-      this.createDefault()
+    const users: UserModel[] = JSON.parse(localStorage.getItem('users')!);
+    const activeUser = users.find(u => u.email === this.getActive());
 
-    if (order.status !== 'paid') return // ovo je izuzetak, ne sme da se oceni dok nije placeno
+    if (!activeUser) return;
 
-    const users: UserModel[] = JSON.parse(localStorage.getItem('users')!)
-    const active = users.find(u => u.email == this.getActive())
+    // Filter out the pet to be deleted
+    activeUser.pets = activeUser.pets.filter(p => p.id !== petId);
 
-    if (!active) {
-      AlertService.error('Order rating failed to change', 'You need to be signed in to browse or change your orders!')
-      return
-    }
-
-    active.pets.forEach(a => {
-      if (a.created == order.created) {
-        a.rating = rating
-      }
-    })
-
-    localStorage.setItem('users', JSON.stringify(users))
+    localStorage.setItem('users', JSON.stringify(users));
   }
 
   public hasActive() {

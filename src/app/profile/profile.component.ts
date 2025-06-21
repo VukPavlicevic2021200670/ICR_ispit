@@ -85,8 +85,38 @@ export class ProfileComponent {
     });
   }
 
+  public deletePet(pet: UserPetModel) {
+    AlertService.question('Delete Adoption', `Are you sure you want to delete the adoption for ${pet.pet?.name}?`)
+        .then(result => {
+          if (result.isConfirmed) {
+            this.userService.deletePet(pet.id);
+            this.loadPets(); // Refresh the list
+            AlertService.info('Adoption deleted successfully');
+          }
+        });
+  }
+
+  public hasUserReviewed(pet: UserPetModel): boolean {
+    if (!pet.pet?.reviews || !this.userService.hasActive()) return false;
+    const userEmail = this.userService.getActive() as string;
+    return pet.pet.reviews.some(review => review.author === userEmail);
+  }
+
+  public getUserReviewRating(pet: UserPetModel): number {
+    if (!pet.pet?.reviews || !this.userService.hasActive()) return 0;
+    const userEmail = this.userService.getActive() as string;
+    const review = pet.pet.reviews.find(r => r.author === userEmail);
+    return review?.rating || 0;
+  }
+
+  public getUserReviewComment(pet: UserPetModel): string {
+    if (!pet.pet?.reviews || !this.userService.hasActive()) return '';
+    const userEmail = this.userService.getActive() as string;
+    const review = pet.pet.reviews.find(r => r.author === userEmail);
+    return review?.comment || '';
+  }
+
   private submitReview(petId: number, reviewData: { rating: number, comment: string }) {
-    console.log('Submitting review with rating:', reviewData.rating); // Debug log
     const userEmail = this.userService.getActive() as string;
     const review: ReviewModel = {
       id: Date.now(),
@@ -98,20 +128,24 @@ export class ProfileComponent {
 
     this.webService.addReview(petId, review).subscribe({
       next: (updatedPet) => {
+        // Update the user's personal rating
         const userPets = this.userService.getUserPets();
         if (userPets) {
           const userPet = userPets.find(p => p.id === petId);
           if (userPet) {
-            userPet.rating = 'l';
-            this.userService.updatePetDetails(userPet.id, { rating: 'l' });
+            userPet.userRating = reviewData.rating;
+            this.userService.updatePetDetails(userPet.id, {
+              userRating: reviewData.rating
+            });
           }
         }
+
         AlertService.info('Review Submitted');
         this.loadPets();
       },
       error: (err) => {
         console.error('Error submitting review:', err);
-        AlertService.error('Error', 'Failed to submit review. Please try again.');
+        AlertService.error('Error', 'Failed to submit review.');
       }
     });
   }
@@ -130,35 +164,25 @@ export class ProfileComponent {
     Swal.fire({
       title: 'Edit Pet Adoption',
       html: `
-      <div class="mb-3">
-        <label class="form-label">Status</label>
-        <select id="status" class="form-select">
-          <option value="reserved" ${pet.status === 'reserved' ? 'selected' : ''}>Reserved</option>
-          <option value="paid" ${pet.status === 'paid' ? 'selected' : ''}>Paid</option>
-          <option value="canceled" ${pet.status === 'canceled' ? 'selected' : ''}>Canceled</option>
-        </select>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Rating</label>
-        <select id="rating" class="form-select">
-          <option value="na" ${pet.rating === 'na' ? 'selected' : ''}>Not Rated</option>
-          <option value="l" ${pet.rating === 'l' ? 'selected' : ''}>Like</option>
-          <option value="d" ${pet.rating === 'd' ? 'selected' : ''}>Dislike</option>
-        </select>
-      </div>
-    `,
+        <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select id="status" class="form-select">
+                <option value="reserved" ${pet.status === 'reserved' ? 'selected' : ''}>Reserved</option>
+                <option value="paid" ${pet.status === 'paid' ? 'selected' : ''}>Paid</option>
+                <option value="canceled" ${pet.status === 'canceled' ? 'selected' : ''}>Canceled</option>
+            </select>
+        </div>
+        `,
       showCancelButton: true,
       confirmButtonText: 'Save',
       preConfirm: () => {
         return {
-          status: (document.getElementById('status') as HTMLSelectElement).value,
-          rating: (document.getElementById('rating') as HTMLSelectElement).value
+          status: (document.getElementById('status') as HTMLSelectElement).value
         }
       }
     }).then(result => {
       if (result.isConfirmed) {
         this.userService.changePetStatus(result.value.status as any, pet);
-        this.userService.changePetRating(result.value.rating as any, pet);
         this.loadPets();
       }
     });
