@@ -4,10 +4,10 @@ import {PetModel} from "./pet.model";
 export interface UserModel {
     email: string
     password: string
-    flights: UserOrderModel[]
+    pets: UserPetModel[]
 }
 
-export interface UserOrderModel {
+export interface UserPetModel {
     id: number,
     pet?: PetModel
     status: 'reserved' | 'paid' | 'canceled'

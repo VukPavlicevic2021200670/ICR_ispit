@@ -1,63 +1,46 @@
-<div class="card mb-3 profile-card">
-    <div class="row g-0">
-        <div class="col-md-4">
-            <img [src]="['https://ui-avatars.com/api/?name='+userService.getActive()]" class="img-fluid rounded-start">
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{userService.getActive()}}</h5>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container mx-auto text-center mb-3">
-    <button type="button" class="btn btn-primary" (click)="doResetPassword()">
-        <i class="fa-solid fa-key"></i> Reset password
-    </button>
-</div>
-
-<table class="table table-striped" *ngIf="orders[0].pet">
+<table class="table table-striped" *ngIf="pets[0].pet">
     <thead>
-        <tr>
-            <th scope="col"><i class="fa-solid fa-hashtag"></i> Id</th>
-            <th scope="col"><i class="fa-solid fa-table"></i> Flight Number</th>
-            <th scope="col"><i class="fa-solid fa-location-dot"></i> Destination</th>
-            <th scope="col"><i class="fa-solid fa-calendar-days"></i> Scheduled At</th>
-            <th scope="col"><i class="fa-solid fa-comment"></i> Status</th>
-            <th scope="col"><i class="fa-solid fa-star"></i> Rating</th>
-            <th scope="col"><i class="fa-solid fa-link"></i> Actions</th>
-        </tr>
+    <tr>
+        <th scope="col"><i class="fa-solid fa-hashtag"></i> Id</th>
+        <th scope="col"><i class="fa-solid fa-paw"></i> Pet Name</th>
+        <th scope="col"><i class="fa-solid fa-dna"></i> Breed</th>
+        <th scope="col"><i class="fa-solid fa-calendar-days"></i> Age</th>
+        <th scope="col"><i class="fa-solid fa-comment"></i> Status</th>
+        <th scope="col"><i class="fa-solid fa-star"></i> Rating</th>
+        <th scope="col"><i class="fa-solid fa-link"></i> Actions</th>
+    </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let order of orders">
-            <th scope="row">{{order.id}}</th>
-
-            <td>{{order.status.toUpperCase()}}</td>
-            <td>
-                <span *ngIf="order.rating == 'na'">N/A</span>
-                <i class="fa-solid fa-thumbs-up" *ngIf="order.rating == 'l'"></i>
-                <i class="fa-solid fa-thumbs-down" *ngIf="order.rating == 'd'"></i>
-            </td>
-            <td>
-                <div class="btn-group">
-                    <button (click)="details(order.id)" type="button" class="btn btn-sm btn-primary btn-table-sm">
-                        <i class="fa-solid fa-up-right-from-square"></i> Details
-                    </button>
-                    <button (click)="pay(order)" type="button" class="btn btn-sm btn-success btn-table-sm"
-                        *ngIf="order.status == 'reserved'">
-                        <i class="fa-solid fa-money-bill"></i> Pay
-                    </button>
-                    <button (click)="rate(order)" type="button" class="btn btn-sm btn-secondary btn-table-sm"
-                        *ngIf="order.status == 'paid' && order.rating == 'na'">
-                        <i class="fa-solid fa-star"></i> Rate
-                    </button>
-                    <button (click)="cancel(order)" type="button" class="btn btn-sm btn-danger btn-table-sm"
-                        *ngIf="order.status == 'reserved'">
-                        <i class="fa-solid fa-ban"></i> Cancel
-                    </button>
-                </div>
-            </td>
-        </tr>
+    <tr *ngFor="let pet of pets">
+        <th scope="row">{{pet.id}}</th>
+        <td>{{pet.pet?.name}}</td>
+        <td>{{pet.pet?.breed}}</td>
+        <td>{{pet.pet?.age}} year{{pet.pet?.age === 1 ? '' : 's'}}</td>
+        <td>{{pet.status.toUpperCase()}}</td>
+        <td>
+            <span *ngIf="pet.rating == 'na'">N/A</span>
+            <i class="fa-solid fa-thumbs-up" *ngIf="pet.rating == 'l'"></i>
+            <i class="fa-solid fa-thumbs-down" *ngIf="pet.rating == 'd'"></i>
+        </td>
+        <td>
+            <div class="btn-group">
+                <button (click)="details(pet.id)" type="button" class="btn btn-sm btn-primary btn-table-sm">
+                    <i class="fa-solid fa-up-right-from-square"></i> Details
+                </button>
+                <button (click)="pay(pet)" type="button" class="btn btn-sm btn-success btn-table-sm"
+                        *ngIf="pet.status == 'reserved'">
+                    <i class="fa-solid fa-money-bill"></i> Pay
+                </button>
+                <button (click)="rate(pet)" type="button" class="btn btn-sm btn-secondary btn-table-sm"
+                        *ngIf="pet.status == 'paid' && pet.rating == 'na'">
+                    <i class="fa-solid fa-star"></i> Rate
+                </button>
+                <button (click)="cancel(pet)" type="button" class="btn btn-sm btn-danger btn-table-sm"
+                        *ngIf="pet.status == 'reserved'">
+                    <i class="fa-solid fa-ban"></i> Cancel
+                </button>
+            </div>
+        </td>
+    </tr>
     </tbody>
 </table>

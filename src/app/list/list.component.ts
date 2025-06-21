@@ -117,18 +117,20 @@ export class ListComponent {
   }
 
   public doAddToCart(id: number) {
-    AlertService.question('Add to cart', `Do you want to add pet ${id} to cart?`)
+    const pet = this.data?.content.find(p => p.id === id);
+    const petName = pet?.name || `Pet #${id}`;
+    AlertService.question('Adopt pet', `Do you want to adopt pet ${petName}?`)
         .then(rsp => {
           if (rsp.isConfirmed) {
             if (!this.userService.hasActive()) {
-              AlertService.error('You have to be signed in', 'You cant add pets to the cart if you are not signed in!');
+              AlertService.error('You have to be signed in', 'You need to be signed in to adopt pets!');
               this.router.navigate(['/login'], {
                 queryParams: { from: this.router.url },
                 relativeTo: this.route
               });
               return;
             }
-            this.userService.addToCart(id);
+            this.userService.addPetToCart(id);  // Changed to addPetToCart
             this.router.navigate(['/profile'], { relativeTo: this.route });
           }
         });

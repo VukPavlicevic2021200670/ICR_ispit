@@ -3,7 +3,7 @@ import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { WebService } from '../../services/web.service';
-import { UserOrderModel } from '../../models/user.model';
+import { UserPetModel } from '../../models/user.model';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../services/alert.service';
 
@@ -18,28 +18,27 @@ export class ProfileComponent {
   public userService = UserService.getInstance()
   public webService = WebService.getInstance()
 
-  public orders: UserOrderModel[] = []
+  public pets: UserPetModel[] = []
 
   constructor(private router: Router, private route: ActivatedRoute) {
     if (!this.userService.hasActive()) {
       this.router.navigate(['/login'], { relativeTo: this.route })
       return
     }
-    this.loadOrders()
+    this.loadPets()
   }
 
-  private loadOrders() {
+  private loadPets() {  // Changed from loadOrders to loadPets
     try {
-      this.orders = this.userService.getUserOrders()!
-      if (this.orders.length == 0) return
+      this.pets = this.userService.getUserPets()!  // Changed to getUserPets
+      if (this.pets.length == 0) return
 
-      // Retrieve flights by id from orders
-      this.webService.getPetsByIds(this.orders.map(o => o.id))
-        .subscribe(rsp => {
-          this.orders.forEach(o => {
-            o.pet = rsp.find(ro => ro.id === o.id)
+      this.webService.getPetsByIds(this.pets.map(p => p.id))
+          .subscribe(rsp => {
+            this.pets.forEach(p => {
+              p.pet = rsp.find(rp => rp.id === p.id)
+            })
           })
-        })
     } catch (e) {
       this.userService.logout()
       this.router.navigate(['/login'], { relativeTo: this.route })
@@ -57,15 +56,15 @@ export class ProfileComponent {
   }
 
   public details(id: number) {
-    this.router.navigate([`/flight/${id}`], { relativeTo: this.route });
+    this.router.navigate([`/pet/${id}`], { relativeTo: this.route });
   }
 
-  public pay(order: UserOrderModel) {
-    this.userService.changeOrderStatus('paid', order)
-    this.loadOrders()
+  public pay(pet: UserPetModel) {
+    this.userService.changePetStatus('paid', pet)  // Changed to changePetStatus
+    this.loadPets()  // Changed to loadPets
   }
 
-  public rate(order: UserOrderModel) {
+  public rate(pet: UserPetModel) {
     // TODO: Implemenitrati rating
     Swal.fire({
       title: 'Leave a rating',
@@ -85,22 +84,22 @@ export class ProfileComponent {
     }).then(res => {
       if (res.isConfirmed) {
         // Korinsik je zadovoljan
-        this.userService.changeOrderRating('l', order)
-        this.loadOrders()
+        this.userService.changePetRating('l', pet)
+        this.loadPets()
         return
       }
 
       if (res.isDenied) {
         // Korinsik je nezadovoljan
-        this.userService.changeOrderRating('d', order)
-        this.loadOrders()
+        this.userService.changePetRating('d', pet)
+        this.loadPets()
         return
       }
     })
   }
 
-  public cancel(order: UserOrderModel) {
-    this.userService.changeOrderStatus('canceled', order)
-    this.loadOrders()
+  public cancel(order: UserPetModel) {
+    this.userService.changePetStatus('canceled', order)
+    this.loadPets()
   }
 }

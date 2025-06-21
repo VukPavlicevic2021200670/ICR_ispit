@@ -44,7 +44,7 @@ export class PetComponent {
               return
             }
 
-            this.userService.addToCart(id)
+            this.userService.addPetToCart(id)
             this.router.navigate(['/profile'], { relativeTo: this.route })
           }
         })

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserModel, UserOrderModel } from '../models/user.model';
+import { UserModel, UserPetModel } from '../models/user.model';
 import { AlertService } from './alert.service';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class UserService {
     const user: UserModel = {
       email: 'vuk.pavlicevic.21@singimail.rs',
       password: 'vpavlicevic',
-      flights: []
+      pets: []
     }
 
     localStorage.setItem('users', JSON.stringify([user]))
@@ -57,7 +57,7 @@ export class UserService {
     users.push({
       email: email,
       password: password,
-      flights: []
+      pets: []
     })
 
     localStorage.setItem('users', JSON.stringify(users))
@@ -82,9 +82,9 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users))
   }
 
-  public addToCart(flightId: number) {
+  public addPetToCart(petId: number) {
     if (!this.hasActive()) {
-      AlertService.error('You have to be logged in', 'You need to be signed in order to add items to the cart!')
+      AlertService.error('You have to be logged in', 'You need to be signed in order to add pets to the cart!')
       return
     }
 
@@ -94,8 +94,8 @@ export class UserService {
     const users: UserModel[] = JSON.parse(localStorage.getItem('users')!)
     users.forEach(u => {
       if (u.email == this.getActive()) {
-        u.flights.push({
-          id: flightId,
+        u.pets.push({
+          id: petId,
           status: 'reserved',
           rating: 'na',
           created: new Date().getTime().toString()
@@ -106,9 +106,9 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users))
   }
 
-  public getUserOrders() {
+  public getUserPets() {
     if (!this.hasActive()) {
-      AlertService.error('Orders failed to load', 'You need to be signed in to browse or change your orders!')
+      AlertService.error('Pets failed to load', 'You need to be signed in to browse or change your pet adoptions!')
       return
     }
 
@@ -119,10 +119,10 @@ export class UserService {
     const active = users.find(u => u.email == this.getActive())
 
     if (!active) throw Error('NO ACTIVE USER')
-    return active.flights
+    return active.pets
   }
 
-  public changeOrderStatus(status: 'reserved' | 'paid' | 'canceled', order: UserOrderModel) {
+  public changePetStatus(status: 'reserved' | 'paid' | 'canceled', order: UserPetModel) {
     if (!this.hasActive()) {
       AlertService.error('Order failed to change', 'You need to be signed in to browse or change your orders!')
       return
@@ -139,7 +139,7 @@ export class UserService {
       return
     }
 
-    active.flights.forEach(a => {
+    active.pets.forEach(a => {
       if (a.created == order.created) {
         a.status = status
       }
@@ -148,7 +148,7 @@ export class UserService {
     localStorage.setItem('users', JSON.stringify(users))
   }
 
-  public changeOrderRating(rating: 'na' | 'l' | 'd', order: UserOrderModel) {
+  public changePetRating(rating: 'na' | 'l' | 'd', order: UserPetModel) {
     if (!this.hasActive()) {
       AlertService.error('Order failed to change', 'You need to be signed in to browse or change your orders!')
       return
@@ -167,7 +167,7 @@ export class UserService {
       return
     }
 
-    active.flights.forEach(a => {
+    active.pets.forEach(a => {
       if (a.created == order.created) {
         a.rating = rating
       }
