@@ -42,7 +42,7 @@ export class PetComponent {
         .then(rsp => {
           if (rsp.isConfirmed) {
             if (!this.userService.hasActive()) {
-              AlertService.error('You have to be signed in', 'You cant add flights to the cart if you are not signed in!')
+              AlertService.error('You have to be signed in', 'You cant add pets to the cart if you are not signed in!')
               this.router.navigate(['/login'], { queryParams: { from: '/flight/' + id }, relativeTo: this.route });
               return
             }
