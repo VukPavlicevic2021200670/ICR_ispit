@@ -30,10 +30,8 @@ export class PetComponent {
     this.webService = WebService.getInstance()
     this.userService = UserService.getInstance()
     route.params.subscribe(params => {
-      // Preuzimamo variajble iz putanje
       const id = params['id']
 
-      // Preuzimamo JSON objekat leta za ID
       this.webService.getPetById(id)
           .subscribe(rsp => this.pet = rsp)
     })
@@ -60,11 +58,9 @@ export class PetComponent {
     const userPets = this.userService.getUserPets();
     if (!userPets) return false;
 
-    // Check if user has this pet with status 'paid' and hasn't reviewed it yet
     const userPet = userPets.find(p => p.id === this.pet?.id && p.status === 'paid');
     if (!userPet) return false;
 
-    // Check if user already reviewed this pet
     const userEmail = this.userService.getActive() as string;
     return !this.pet.reviews.some(r => r.author === userEmail);
   }

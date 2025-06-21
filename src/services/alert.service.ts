@@ -46,7 +46,6 @@ export class AlertService {
             }
         })
     }
-    // Add this method to your alert.service.ts
     static reviewForm(petName: string): Promise<any> {
         let selectedRating = 5; // Default rating
 
@@ -103,7 +102,6 @@ export class AlertService {
                             ratingInput.value = selectedRating.toString();
                         }
 
-                        // Update star display
                         stars?.forEach((s) => {
                             const starRating = s.getAttribute('data-rating');
                             const starValue = starRating ? parseInt(starRating) : 0;

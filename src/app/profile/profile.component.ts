@@ -7,7 +7,7 @@ import { UserPetModel } from '../../models/user.model';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../services/alert.service';
 import {FormsModule} from "@angular/forms";
-import {PetModel, ReviewModel} from "../../models/pet.model";
+import {ReviewModel} from "../../models/pet.model";
 
 @Component({
   selector: 'app-profile',
@@ -25,11 +25,6 @@ export class ProfileComponent {
   public searchStatus = '';
 
   public pets: UserPetModel[] = []
-  public selectedPetForReview: PetModel | null = null;
-  public newReview: { rating: number, comment: string } = {
-    rating: 5,
-    comment: ''
-  };
 
   constructor(private router: Router, private route: ActivatedRoute) {
     if (!this.userService.hasActive()) {
@@ -96,25 +91,6 @@ export class ProfileComponent {
         });
   }
 
-  public hasUserReviewed(pet: UserPetModel): boolean {
-    if (!pet.pet?.reviews || !this.userService.hasActive()) return false;
-    const userEmail = this.userService.getActive() as string;
-    return pet.pet.reviews.some(review => review.author === userEmail);
-  }
-
-  public getUserReviewRating(pet: UserPetModel): number {
-    if (!pet.pet?.reviews || !this.userService.hasActive()) return 0;
-    const userEmail = this.userService.getActive() as string;
-    const review = pet.pet.reviews.find(r => r.author === userEmail);
-    return review?.rating || 0;
-  }
-
-  public getUserReviewComment(pet: UserPetModel): string {
-    if (!pet.pet?.reviews || !this.userService.hasActive()) return '';
-    const userEmail = this.userService.getActive() as string;
-    const review = pet.pet.reviews.find(r => r.author === userEmail);
-    return review?.comment || '';
-  }
 
   private submitReview(petId: number, reviewData: { rating: number, comment: string }) {
     const userEmail = this.userService.getActive() as string;
@@ -128,7 +104,6 @@ export class ProfileComponent {
 
     this.webService.addReview(petId, review).subscribe({
       next: (updatedPet) => {
-        // Update the user's personal rating
         const userPets = this.userService.getUserPets();
         if (userPets) {
           const userPet = userPets.find(p => p.id === petId);

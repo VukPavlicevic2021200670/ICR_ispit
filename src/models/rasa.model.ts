@@ -1,4 +1,3 @@
-import { FlightModel } from "./flight.model"
 import {PetModel} from "./pet.model";
 
 export interface RasaModel {

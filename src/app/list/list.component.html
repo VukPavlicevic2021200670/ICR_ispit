@@ -8,10 +8,7 @@
 </nav>
 
 <h1 class="h3 mb-4">Browse Pets</h1>
-
-<!-- Search Form - Updated with new filters -->
 <div class="row mb-4">
-    <!-- Name Search -->
     <div class="col-md-4 mb-2">
         <div class="input-group">
             <span class="input-group-text">
@@ -20,8 +17,6 @@
             <input type="text" class="form-control" [(ngModel)]="searchName" placeholder="Search by name...">
         </div>
     </div>
-
-    <!-- Breed Search -->
     <div class="col-md-4 mb-2">
         <div class="input-group">
             <span class="input-group-text">
@@ -30,8 +25,6 @@
             <input type="text" class="form-control" [(ngModel)]="searchBreed" placeholder="Search by breed...">
         </div>
     </div>
-
-    <!-- Size Filter -->
     <div class="col-md-4 mb-2">
         <div class="input-group">
             <span class="input-group-text">
@@ -46,8 +39,6 @@
             </select>
         </div>
     </div>
-
-    <!-- Age Filter -->
     <div class="col-md-3 mb-2">
         <div class="input-group">
             <span class="input-group-text">
@@ -56,8 +47,6 @@
             <input type="text" class="form-control" [(ngModel)]="searchAge" placeholder="Age (e.g., 1-3)">
         </div>
     </div>
-
-    <!-- Price Range Filter -->
     <div class="col-md-3 mb-2">
         <div class="input-group">
             <span class="input-group-text">
@@ -72,33 +61,24 @@
             </select>
         </div>
     </div>
-
-    <!-- Filter Button -->
     <div class="col-md-2 mb-2">
         <button class="btn btn-primary w-100 h-100" (click)="search()">
             <i class="fa-solid fa-filter"></i> Filter
         </button>
     </div>
-
-    <!-- Reset Button -->
     <div class="col-md-2 mb-2">
         <button class="btn btn-outline-secondary w-100 h-100" (click)="resetFilters()">
             <i class="fa-solid fa-rotate-left"></i> Reset
         </button>
     </div>
 </div>
-
-<!-- Loading Spinner -->
 <div *ngIf="!data" class="text-center my-5">
     <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
     <p class="mt-2">Loading pets...</p>
 </div>
-
-<!-- Content -->
 <div *ngIf="data">
-    <!-- Pagination Top -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="text-muted">
             Showing {{ data.numberOfElements }} of {{ data.totalElements }} pets
@@ -133,8 +113,6 @@
             </ul>
         </nav>
     </div>
-
-    <!-- Pets Table -->
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -201,14 +179,10 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Empty State -->
     <div *ngIf="data.empty" class="alert alert-info text-center">
         <i class="fa-solid fa-paw me-2"></i>
         No pets found matching your criteria.
     </div>
-
-    <!-- Pagination Bottom -->
     <div class="d-flex justify-content-center mt-4">
         <nav>
             <ul class="pagination">

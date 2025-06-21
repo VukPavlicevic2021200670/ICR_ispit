@@ -8,7 +8,6 @@ app.use(express.json());
 
 let pets = require('./pets.json');
 
-// Middleware to log requests
 app.use((req, res, next) => {
     console.log(`\n[${new Date().toISOString()}] ${req.method} ${req.path}`);
     console.log('Query:', req.query);
@@ -18,7 +17,6 @@ app.use((req, res, next) => {
 
 app.get('/api/pets', (req, res) => {
     try {
-        // Parse query parameters with defaults
         let {
             page = 0,
             size = 10,
@@ -42,7 +40,6 @@ app.get('/api/pets', (req, res) => {
         let filtered = [...pets];
         console.log(`Initial pets count: ${filtered.length}`);
 
-        // Apply filters
         if (name) {
             const searchName = name.toLowerCase().trim();
             filtered = filtered.filter(p =>
@@ -81,7 +78,6 @@ app.get('/api/pets', (req, res) => {
             console.log(`After exact age filter (${age}): ${filtered.length} pets`);
         }
 
-        // Age range filtering (either from age range or min/max)
         if (minAge || maxAge) {
             const min = minAge ? parseInt(minAge) : 0;
             const max = maxAge ? parseInt(maxAge) : 100;
@@ -101,7 +97,6 @@ app.get('/api/pets', (req, res) => {
             console.log(`After price filter (${priceRange}): ${filtered.length} pets`);
         }
 
-        // Pagination
         const totalElements = filtered.length;
         const totalPages = Math.ceil(totalElements / size);
         const content = filtered.slice(page * size, page * size + size);
@@ -145,7 +140,6 @@ app.get('/api/pets', (req, res) => {
     }
 });
 
-// Keep other endpoints unchanged
 app.get('/api/pets/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const pet = pets.find(p => p.id === id);
@@ -169,12 +163,10 @@ app.post('/api/pets/:id/reviews', (req, res) => {
         }
 
         const newReview = req.body;
-        // Basic validation
         if (!newReview.author || !newReview.rating || !newReview.comment) {
             return res.status(400).json({ error: 'Missing required review fields' });
         }
 
-        // Add the review to the pet
         if (!pets[petIndex].reviews) {
             pets[petIndex].reviews = [];
         }

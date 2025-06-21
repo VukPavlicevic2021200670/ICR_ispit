@@ -149,13 +149,13 @@ class ActionPetListByMultiple(Action):
 
         params = {
             'page': 0,
-            'size': 4  # Pagination size
+            'size': 4
         }
 
         if breed:
             params['breed'] = breed
         if size:
-            params['petSize'] = size  # Changed to petSize
+            params['petSize'] = size
         if age:
             age_map = {
                 'baby': '0-1',
@@ -179,7 +179,7 @@ class ActionPetListByMultiple(Action):
         if breed:
             filter_descriptions.append(f"breed: {breed}")
         if size:
-            filter_descriptions.append(f"size: {size}")  # User-facing still says "size"
+            filter_descriptions.append(f"size: {size}")
         if age:
             filter_descriptions.append(f"age: {age}")
         if price:

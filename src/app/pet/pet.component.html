@@ -1,4 +1,3 @@
-<!-- pet.component.html -->
 <div *ngIf="pet">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -51,8 +50,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Reviews Section -->
     <div class="mt-4" *ngIf="pet.reviews && pet.reviews.length > 0">
         <h4>Reviews</h4>
         <div class="list-group">
@@ -72,7 +69,6 @@
             </div>
         </div>
     </div>
-    <!-- Add this section below the existing reviews section -->
     <div class="mt-4" *ngIf="canAddReview()">
         <h4>Add Your Review</h4>
         <div class="card">

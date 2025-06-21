@@ -1,14 +1,13 @@
-// pet.model.ts
 export interface PetModel {
     id: number;
     name: string;
     description: string;
     breed: string;
     origin: string;
-    size: string; // Could be enum: 'Small', 'Medium', 'Large'
+    size: string;
     age: number;
     imageUrl: string;
-    priceRange: string; // Could be enum: '$', '$$', '$$$', '$$$$'
+    priceRange: string;
     reviews: ReviewModel[];
 }
 
@@ -17,5 +16,5 @@ export interface ReviewModel {
     author: string;
     rating: number;
     comment: string;
-    date: string; // or Date
+    date: string;
 }

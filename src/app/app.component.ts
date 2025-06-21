@@ -18,7 +18,7 @@ import { UserService } from '../services/user.service';
 export class AppComponent implements OnInit, AfterViewChecked {
   webService = WebService.getInstance()
   userService = UserService.getInstance()
-  title = 'interakcija-covek-racunar-2024'
+  title = 'ICR Ispit'
   year = new Date().getFullYear()
 
   waitingForResponse = false
@@ -27,7 +27,6 @@ export class AppComponent implements OnInit, AfterViewChecked {
   userMessage: string = ''
   messages: MessageModel[] = []
 
-  // ViewChild to access the chat-body element directly
   @ViewChild('chatBody', { static: false }) chatBody: ElementRef | undefined;
 
   constructor(private router: Router, private route: ActivatedRoute) { }
@@ -64,7 +63,6 @@ export class AppComponent implements OnInit, AfterViewChecked {
       this.waitingForResponse = true
 
     if (message.type == 'bot' && message.text != this.botThinkingPlaceholder) {
-      // Try to find the thinking placeholder message
       for (let m of this.messages) {
         if (m.type == 'bot' && m.text == this.botThinkingPlaceholder) {
           m.text = message.text
@@ -75,17 +73,14 @@ export class AppComponent implements OnInit, AfterViewChecked {
     }
 
     this.messages.push(message);
-    // Save messages in local storage
     localStorage.setItem('messages', JSON.stringify(this.messages));
   }
 
   sendMessage() {
-    // wating for response, user can't send new messages
     if (this.waitingForResponse) return
 
     if (this.userMessage.trim()) {
       const trimmedInput = this.userMessage;
-      // Reset user input
       this.userMessage = '';
 
       this.pushMessage({ type: 'user', text: trimmedInput });
@@ -101,7 +96,6 @@ export class AppComponent implements OnInit, AfterViewChecked {
           }
 
           rsp.map(msg => {
-            // Handle bot message (including images, flight cards, etc.)
             if (msg.image) {
               return `<img src="${msg.image}" width="200">`;
             }

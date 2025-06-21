@@ -1,6 +1,5 @@
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { FlightModel } from '../models/flight.model';
 import { PageModel } from '../models/page.model';
 import { RasaModel } from '../models/rasa.model';
 import {PetModel, ReviewModel} from '../models/pet.model';
@@ -82,16 +81,6 @@ export class WebService {
         'Content-Type': 'application/json'
       }
     });
-  }
-
-  public formatDate(iso: string | null) {
-    if (iso == null) return 'On Time'
-    return new Date(iso).toLocaleString('sr-RS')
-  }
-
-  public formatValue(str: any | null) {
-    if (str == null) return 'N/A'
-    return str
   }
 
   private retrieveRasaSession() {
