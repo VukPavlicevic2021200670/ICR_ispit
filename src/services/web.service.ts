@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { FlightModel } from '../models/flight.model';
 import { PageModel } from '../models/page.model';
 import { RasaModel } from '../models/rasa.model';
-import { PetModel } from '../models/pet.model';
+import {PetModel, ReviewModel} from '../models/pet.model';
 import { v4 as uuidv4 } from 'uuid';
 import {Observable} from "rxjs";
 
@@ -74,7 +74,15 @@ export class WebService {
     return this.client.get<PetModel>(url);
   }
 
-
+  public addReview(petId: number, review: Partial<ReviewModel>): Observable<PetModel> {
+    const url = `${this.baseUrl}/pets/${petId}/reviews`;
+    return this.client.post<PetModel>(url, review, {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+  }
 
   public formatDate(iso: string | null) {
     if (iso == null) return 'On Time'

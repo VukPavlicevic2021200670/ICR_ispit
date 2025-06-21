@@ -7,6 +7,7 @@ import { UserPetModel } from '../../models/user.model';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../services/alert.service';
 import {FormsModule} from "@angular/forms";
+import {PetModel, ReviewModel} from "../../models/pet.model";
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +25,11 @@ export class ProfileComponent {
   public searchStatus = '';
 
   public pets: UserPetModel[] = []
+  public selectedPetForReview: PetModel | null = null;
+  public newReview: { rating: number, comment: string } = {
+    rating: 5,
+    comment: ''
+  };
 
   constructor(private router: Router, private route: ActivatedRoute) {
     if (!this.userService.hasActive()) {
@@ -70,37 +76,44 @@ export class ProfileComponent {
   }
 
   public rate(pet: UserPetModel) {
-    // TODO: Implemenitrati rating
-    Swal.fire({
-      title: 'Leave a rating',
-      text: 'Did you enjoy flying with us?',
-      icon: 'question',
-      showCancelButton: true,
-      showDenyButton: true,
-      confirmButtonText: '<i class="fa-solid fa-thumbs-up"></i>',
-      cancelButtonText: 'cancel',
-      denyButtonText: '<i class="fa-solid fa-thumbs-down"></i>',
-      customClass: {
-        popup: 'card',
-        confirmButton: 'btn btn-success',
-        denyButton: 'btn btn-danger',
-        cancelButton: 'btn btn-primary'
-      }
-    }).then(res => {
-      if (res.isConfirmed) {
-        // Korinsik je zadovoljan
-        this.userService.changePetRating('l', pet)
-        this.loadPets()
-        return
-      }
+    if (!pet.pet) return;
 
-      if (res.isDenied) {
-        // Korinsik je nezadovoljan
-        this.userService.changePetRating('d', pet)
-        this.loadPets()
-        return
+    AlertService.reviewForm(pet.pet.name).then((result) => {
+      if (result.isConfirmed && pet.pet) {
+        this.submitReview(pet.pet.id, result.value);
       }
-    })
+    });
+  }
+
+  private submitReview(petId: number, reviewData: { rating: number, comment: string }) {
+    console.log('Submitting review with rating:', reviewData.rating); // Debug log
+    const userEmail = this.userService.getActive() as string;
+    const review: ReviewModel = {
+      id: Date.now(),
+      author: userEmail,
+      rating: reviewData.rating,
+      comment: reviewData.comment,
+      date: new Date().toISOString().split('T')[0]
+    };
+
+    this.webService.addReview(petId, review).subscribe({
+      next: (updatedPet) => {
+        const userPets = this.userService.getUserPets();
+        if (userPets) {
+          const userPet = userPets.find(p => p.id === petId);
+          if (userPet) {
+            userPet.rating = 'l';
+            this.userService.updatePetDetails(userPet.id, { rating: 'l' });
+          }
+        }
+        AlertService.info('Review Submitted');
+        this.loadPets();
+      },
+      error: (err) => {
+        console.error('Error submitting review:', err);
+        AlertService.error('Error', 'Failed to submit review. Please try again.');
+      }
+    });
   }
 
   public get filteredPets(): UserPetModel[] {

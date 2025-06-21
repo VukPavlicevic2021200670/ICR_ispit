@@ -72,4 +72,32 @@
             </div>
         </div>
     </div>
+    <!-- Add this section below the existing reviews section -->
+    <div class="mt-4" *ngIf="canAddReview()">
+        <h4>Add Your Review</h4>
+        <div class="card">
+            <div class="card-body">
+                <form (ngSubmit)="submitReview()" #reviewForm="ngForm">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <select class="form-select" id="rating" name="rating" [(ngModel)]="newReview.rating" required>
+                            <option value="1">1 Star</option>
+                            <option value="2">2 Stars</option>
+                            <option value="3">3 Stars</option>
+                            <option value="4">4 Stars</option>
+                            <option value="5">5 Stars</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea class="form-control" id="comment" name="comment"
+                                  [(ngModel)]="newReview.comment" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="!reviewForm.form.valid">
+                        Submit Review
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

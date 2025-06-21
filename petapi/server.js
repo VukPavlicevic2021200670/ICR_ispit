@@ -159,6 +159,41 @@ app.post('/api/pets/list', (req, res) => {
     res.json(filtered);
 });
 
+app.post('/api/pets/:id/reviews', (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const petIndex = pets.findIndex(p => p.id === id);
+
+        if (petIndex === -1) {
+            return res.status(404).json({ error: 'Pet not found' });
+        }
+
+        const newReview = req.body;
+        // Basic validation
+        if (!newReview.author || !newReview.rating || !newReview.comment) {
+            return res.status(400).json({ error: 'Missing required review fields' });
+        }
+
+        // Add the review to the pet
+        if (!pets[petIndex].reviews) {
+            pets[petIndex].reviews = [];
+        }
+
+        pets[petIndex].reviews.push({
+            id: Date.now(), // Simple ID generation
+            author: newReview.author,
+            rating: parseInt(newReview.rating),
+            comment: newReview.comment,
+            date: new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+        });
+
+        res.status(201).json(pets[petIndex]);
+    } catch (error) {
+        console.error('Error adding review:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.listen(port, () => {
     console.log(`Pet API listening at http://localhost:${port}`);
     console.log('Available filters:');
