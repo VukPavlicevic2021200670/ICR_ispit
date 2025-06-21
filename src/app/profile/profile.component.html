@@ -1,4 +1,23 @@
-<table class="table table-striped" *ngIf="pets[0].pet">
+<!-- Add search filters above the table -->
+<div class="row mb-3">
+    <div class="col-md-4">
+        <input type="text" class="form-control" [(ngModel)]="searchPetName" placeholder="Search by pet name...">
+    </div>
+    <div class="col-md-4">
+        <input type="text" class="form-control" [(ngModel)]="searchBreed" placeholder="Search by breed...">
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" [(ngModel)]="searchStatus">
+            <option value="">All Statuses</option>
+            <option value="reserved">Reserved</option>
+            <option value="paid">Paid</option>
+            <option value="canceled">Canceled</option>
+        </select>
+    </div>
+</div>
+
+
+<table class="table table-striped" *ngIf="filteredPets.length > 0">
     <thead>
     <tr>
         <th scope="col"><i class="fa-solid fa-hashtag"></i> Id</th>
@@ -11,7 +30,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let pet of pets">
+    <tr *ngFor="let pet of filteredPets">
         <th scope="row">{{pet.id}}</th>
         <td>{{pet.pet?.name}}</td>
         <td>{{pet.pet?.breed}}</td>
@@ -44,3 +63,7 @@
     </tr>
     </tbody>
 </table>
+
+<div *ngIf="filteredPets.length === 0" class="alert alert-info">
+    No pets found matching your criteria.
+</div>

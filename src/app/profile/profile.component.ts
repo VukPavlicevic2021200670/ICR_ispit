@@ -6,17 +6,22 @@ import { WebService } from '../../services/web.service';
 import { UserPetModel } from '../../models/user.model';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../services/alert.service';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, FormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
   public userService = UserService.getInstance()
   public webService = WebService.getInstance()
+
+  public searchPetName = '';
+  public searchBreed = '';
+  public searchStatus = '';
 
   public pets: UserPetModel[] = []
 
@@ -96,6 +101,15 @@ export class ProfileComponent {
         return
       }
     })
+  }
+
+  public get filteredPets(): UserPetModel[] {
+    return this.pets.filter(pet => {
+      const nameMatch = pet.pet?.name?.toLowerCase().includes(this.searchPetName.toLowerCase()) ?? false;
+      const breedMatch = pet.pet?.breed?.toLowerCase().includes(this.searchBreed.toLowerCase()) ?? false;
+      const statusMatch = this.searchStatus ? pet.status === this.searchStatus : true;
+      return nameMatch && breedMatch && statusMatch;
+    });
   }
 
   public cancel(order: UserPetModel) {
