@@ -121,7 +121,23 @@ export class UserService {
     if (!active) throw Error('NO ACTIVE USER')
     return active.pets
   }
+  public updatePetDetails(petId: number, updates: Partial<UserPetModel>) {
+    if (!this.hasActive()) {
+      AlertService.error('Update failed', 'You need to be signed in to update pet details!');
+      return;
+    }
 
+    const users: UserModel[] = JSON.parse(localStorage.getItem('users')!);
+    const activeUser = users.find(u => u.email === this.getActive());
+
+    if (!activeUser) return;
+
+    const petToUpdate = activeUser.pets.find(p => p.id === petId);
+    if (petToUpdate) {
+      Object.assign(petToUpdate, updates);
+      localStorage.setItem('users', JSON.stringify(users));
+    }
+  }
   public changePetStatus(status: 'reserved' | 'paid' | 'canceled', order: UserPetModel) {
     if (!this.hasActive()) {
       AlertService.error('Order failed to change', 'You need to be signed in to browse or change your orders!')

@@ -54,6 +54,12 @@
                         *ngIf="pet.status == 'paid' && pet.rating == 'na'">
                     <i class="fa-solid fa-star"></i> Rate
                 </button>
+                <button (click)="details(pet.id)" type="button" class="btn btn-sm btn-primary btn-table-sm">
+                    <i class="fa-solid fa-up-right-from-square"></i> Details
+                </button>
+                <button (click)="editPet(pet)" type="button" class="btn btn-sm btn-info btn-table-sm">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>
                 <button (click)="cancel(pet)" type="button" class="btn btn-sm btn-danger btn-table-sm"
                         *ngIf="pet.status == 'reserved'">
                     <i class="fa-solid fa-ban"></i> Cancel

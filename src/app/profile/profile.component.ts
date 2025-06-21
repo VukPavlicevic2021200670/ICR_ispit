@@ -112,6 +112,45 @@ export class ProfileComponent {
     });
   }
 
+  // Add these methods to the component class
+  public editPet(pet: UserPetModel) {
+    Swal.fire({
+      title: 'Edit Pet Adoption',
+      html: `
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select id="status" class="form-select">
+          <option value="reserved" ${pet.status === 'reserved' ? 'selected' : ''}>Reserved</option>
+          <option value="paid" ${pet.status === 'paid' ? 'selected' : ''}>Paid</option>
+          <option value="canceled" ${pet.status === 'canceled' ? 'selected' : ''}>Canceled</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Rating</label>
+        <select id="rating" class="form-select">
+          <option value="na" ${pet.rating === 'na' ? 'selected' : ''}>Not Rated</option>
+          <option value="l" ${pet.rating === 'l' ? 'selected' : ''}>Like</option>
+          <option value="d" ${pet.rating === 'd' ? 'selected' : ''}>Dislike</option>
+        </select>
+      </div>
+    `,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      preConfirm: () => {
+        return {
+          status: (document.getElementById('status') as HTMLSelectElement).value,
+          rating: (document.getElementById('rating') as HTMLSelectElement).value
+        }
+      }
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.userService.changePetStatus(result.value.status as any, pet);
+        this.userService.changePetRating(result.value.rating as any, pet);
+        this.loadPets();
+      }
+    });
+  }
+
   public cancel(order: UserPetModel) {
     this.userService.changePetStatus('canceled', order)
     this.loadPets()
